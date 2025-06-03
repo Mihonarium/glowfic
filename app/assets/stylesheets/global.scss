@@ -12,6 +12,7 @@ body {
 html {
   box-sizing: border-box;
   font-size: 16px; // stylelint-disable-line declaration-property-unit-allowed-list
+  scroll-behavior: smooth;
 }
 
 *, ::before, ::after { // stylelint-disable-line selector-max-universal
@@ -24,9 +25,14 @@ a {
   color: $font_color_link;
   &:visited { color: $font_color_link_visited; }
 
-  &:hover {
+  &:hover, &:focus {
     color: $font_color_link_hover;
-    text-decoration: none;
+    text-decoration: underline;
+  }
+  
+  &:focus {
+    outline: 2px solid $font_color_link;
+    outline-offset: 2px;
   }
 }
 
@@ -40,10 +46,30 @@ input, textarea, button {
   padding: 0 8px;
   border: 1px solid $border_color_input;
   margin: 5px 0;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  
+  &:focus {
+    outline: none;
+    border-color: $font_color_link;
+    box-shadow: 0 0 0 2px rgba($font_color_link, 0.2);
+  }
 }
 
-input[type='checkbox'] { height: 23px; }
-textarea { padding: 5px; }
+input[type='checkbox'] { 
+  height: 23px; 
+  min-width: 23px;
+  
+  &:focus {
+    outline: 2px solid $font_color_link;
+    outline-offset: 2px;
+  }
+}
+
+textarea { 
+  padding: 5px;
+  min-height: 80px;
+  resize: vertical;
+}
 
 button, .button {
   background: $bg_color_button;
@@ -52,6 +78,25 @@ button, .button {
   border-color: $border_color_button;
   line-height: normal;
   height: 25px;
+  cursor: pointer;
+  min-height: 44px; // Touch target size for mobile
+  
+  &:hover, &:focus {
+    filter: brightness(110%);
+    transform: translateY(-1px);
+  }
+  
+  &:focus {
+    outline: 2px solid $font_color_link;
+    outline-offset: 2px;
+  }
+  
+  &:disabled, &[disabled] {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+    filter: none;
+  }
 }
 
 /* Display Helpers */
@@ -108,6 +153,33 @@ button, .button {
 .semiopaque { opacity: 0.5; }
 .semiplusopaque { opacity: 0.6; }
 
+/* Skip navigation for accessibility */
+.skip-nav {
+  position: absolute;
+  top: -40px;
+  left: 6px;
+  background: $font_color_link;
+  color: white;
+  padding: 8px;
+  text-decoration: none;
+  border-radius: 4px;
+  z-index: 1000;
+  
+  &:focus {
+    top: 6px;
+  }
+}
+
+/* Better visual hierarchy */
+.content-section {
+  margin-bottom: 2rem;
+  
+  & + .content-section {
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    padding-top: 2rem;
+  }
+}
+
 /* For UI elements involving reordering */
 .disabled-arrow {
   filter: $filter_disabled; /* IE */
@@ -142,7 +214,25 @@ a.disabled-arrow {
   font-weight: normal;
   height: 28px;
   vertical-align: middle;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  
   img { vertical-align: baseline; }
+  
+  &:hover, &:focus {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+  
+  &:focus {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+  }
 }
 
 .link-box.action-new { background-color: $bg_color_linkbox_new; }

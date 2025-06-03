@@ -54,6 +54,7 @@
     = include_gon
     = javascript_include_tag 'application_deferred'.freeze, defer: :defer
   %body
+    %a.skip-nav{href: "#content"} Skip to main content
     #holder
       #header
         - if logged_in?

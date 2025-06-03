@@ -12,6 +12,31 @@ $(document).ready(function() {
     $(this).closest('.flash').slideUp(200);
     return false;
   });
+  
+  // Add loading states to forms
+  $('form').on('submit', function() {
+    const $form = $(this);
+    const $submitButton = $form.find('input[type="submit"], button[type="submit"]');
+    
+    if ($submitButton.length) {
+      const originalText = $submitButton.val() || $submitButton.text();
+      $submitButton.prop('disabled', true)
+        .addClass('loading')
+        .val('Processing...')
+        .text('Processing...');
+      
+      // Store original text for potential restoration
+      $submitButton.data('original-text', originalText);
+    }
+  });
+  
+  // Improve button click feedback
+  $('.link-box, button, .button').on('click', function() {
+    $(this).addClass('clicked');
+    setTimeout(() => {
+      $(this).removeClass('clicked');
+    }, 150);
+  });
 
   $('.check-all').on('change', function() {
     // The check-all's checkbox value will contain the name of the checkboxes which are meant to be checked
